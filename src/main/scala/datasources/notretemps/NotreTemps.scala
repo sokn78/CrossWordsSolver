@@ -7,7 +7,7 @@ package datasources.notretemps
 import java.io.File
 import javax.script.ScriptEngineManager
 
-import entities.Grid
+import entities.{FoundLetter,BlackSquare,WhiteSquare,Grid,Square,Letters}
 
 import scala.io.Source
 import org.json4s.{DefaultFormats, Extraction}
@@ -32,14 +32,20 @@ class FileParser() {
   }
 }
 
-object NotreTemps  {
+object NotreTemps {
 
-  def convert(notreTempsGrid:NotreTemps):Grid = {
+  def convert(notreTempsGrid: NotreTemps): Grid = {
 
     val vSize = notreTempsGrid.nbcaseshauteur
     val hSize = notreTempsGrid.nbcaseslargeur
 
-    throw new Exception("Not Implemented")
+    val grid: Array[Array[Square]] = notreTempsGrid.grille.toArray.map {
+      case head :: _ => head.toCharArray.map {
+        case 'x' => BlackSquare:Square
+        case char => FoundLetter(Letters.fromCharacter(char))
+      }
+    }
+    new Grid(vSize, hSize, grid)
   }
 
 }

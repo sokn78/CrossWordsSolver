@@ -5,5 +5,11 @@ package entities
   */
 
 
-class Grid(vSize:Int, hSize:Int, val squares : Map[(Int,Int),Square])
+class Grid(vSize:Int, hSize:Int, val squares : Array[Array[Square]]){
+  override def toString:String = {
+    squares.map { line =>
+      line.mkString(" ")
+    }.mkString("\n")
+  }
+}
 
