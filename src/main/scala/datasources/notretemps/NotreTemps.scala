@@ -16,6 +16,7 @@ import org.json4s.jackson.JsonMethods.{compact, parse}
 case class NotreTemps(grille:List[List[String]], definitionsh:List[List[String]], definitionsv:List[List[String]],nbcaseslargeur:Int,nbcaseshauteur:Int)
 
 class FileParser() {
+  implicit val formats: DefaultFormats.type = DefaultFormats
 
   val engine = new ScriptEngineManager().getEngineByMimeType("text/javascript")
   private val NotreTempsResourcePattern = "var gamedata = (.*);".r
@@ -38,6 +39,7 @@ object NotreTemps  {
     val vSize = notreTempsGrid.nbcaseshauteur
     val hSize = notreTempsGrid.nbcaseslargeur
 
+    throw new Exception("Not Implemented")
   }
 
 }
