@@ -21,5 +21,5 @@ case object WhiteSquare extends Square{
   override def toString:String = " "
 }
 case object BlackSquare extends Square{
-  override def toString:String = "#"
+  override def toString:String = "\u2588"
 }
