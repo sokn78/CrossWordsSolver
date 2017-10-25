@@ -13,7 +13,7 @@ import scala.io.Source
 import org.json4s.{DefaultFormats, Extraction}
 import org.json4s.jackson.JsonMethods.{compact, parse}
 
-case class NotreTemps(grille:List[List[String]], definitionsh:List[List[String]], definitionsv:List[List[String]],nbcaseslargeur:Int,nbcaseshauteur:Int)
+case class NotreTemps(grille:Array[List[String]], definitionsh:List[List[String]], definitionsv:List[List[String]],nbcaseslargeur:Int,nbcaseshauteur:Int)
 
 class FileParser() {
   implicit val formats: DefaultFormats.type = DefaultFormats
@@ -39,7 +39,7 @@ object NotreTemps {
     val vSize = notreTempsGrid.nbcaseshauteur
     val hSize = notreTempsGrid.nbcaseslargeur
 
-    val grid: Array[Array[GridSquare]] = notreTempsGrid.grille.toArray.map {
+    val grid: Array[Array[GridSquare]] = notreTempsGrid.grille.map {
       case head :: _ => head.toCharArray.map {
         case 'x' => BlackGridSquare
         case char => FoundLetter(Letters.fromCharacter(char))

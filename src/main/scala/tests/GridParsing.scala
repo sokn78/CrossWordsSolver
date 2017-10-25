@@ -27,11 +27,11 @@ object GridParsing extends App {
 
   val blankGrid = grid.makeBlank
 
-
   println(grid)
 
   println(blankGrid)
-  val d = Some(4)
+
+  val horizontalWords = grid.horizontalWords.foreach{x => x.foreach(println)  ; println() }
 
 
 }
