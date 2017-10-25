@@ -7,7 +7,7 @@ package datasources.notretemps
 import java.io.File
 import javax.script.ScriptEngineManager
 
-import entities.{FoundLetter,BlackSquare,WhiteSquare,Grid,Square,Letters}
+import entities._
 
 import scala.io.Source
 import org.json4s.{DefaultFormats, Extraction}
@@ -18,7 +18,7 @@ case class NotreTemps(grille:List[List[String]], definitionsh:List[List[String]]
 class FileParser() {
   implicit val formats: DefaultFormats.type = DefaultFormats
 
-  val engine = new ScriptEngineManager().getEngineByMimeType("text/javascript")
+  private val engine = new ScriptEngineManager().getEngineByMimeType("text/javascript")
   private val NotreTempsResourcePattern = "var gamedata = (.*);".r
 
   def parseFile(file: File): NotreTemps = {
@@ -39,13 +39,13 @@ object NotreTemps {
     val vSize = notreTempsGrid.nbcaseshauteur
     val hSize = notreTempsGrid.nbcaseslargeur
 
-    val grid: Array[Array[Square]] = notreTempsGrid.grille.toArray.map {
+    val grid: Array[Array[GridSquare]] = notreTempsGrid.grille.toArray.map {
       case head :: _ => head.toCharArray.map {
-        case 'x' => BlackSquare:Square
+        case 'x' => BlackGridSquare
         case char => FoundLetter(Letters.fromCharacter(char))
       }
     }
-    new Grid(vSize, hSize, grid)
+    Grid(vSize, hSize, grid)
   }
 
 }

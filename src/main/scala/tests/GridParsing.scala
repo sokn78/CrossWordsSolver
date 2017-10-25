@@ -25,10 +25,13 @@ object GridParsing extends App {
 
   val grid = NotreTemps.convert(notreTempsGrid)
 
+  val blankGrid = grid.makeBlank
+
+
   println(grid)
 
-
-
+  println(blankGrid)
+  val d = Some(4)
 
 
 }
