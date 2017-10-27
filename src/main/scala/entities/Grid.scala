@@ -32,7 +32,15 @@ case class Grid(vSize:Int, hSize:Int, gridSquares : Array[Array[GridSquare]]){
   }.flatMap{
     case (lineNumber,allSegments) =>
       allSegments.map( _.map{case (gridSquare,columnNumber) => (Position(lineNumber,columnNumber),gridSquare)})
-  }
+  }.filter(_.length > 1)
+
+  val verticalWords = gridSquares.transpose.zipWithIndex.map{
+    case (line,lineNumber) =>
+      (lineNumber,ArrayManipulation.splitArray[(GridSquare,Int)](line.zipWithIndex,x => x._1 == BlackGridSquare))
+  }.flatMap{
+    case (lineNumber,allSegments) =>
+      allSegments.map( _.map{case (gridSquare,columnNumber) => (Position(columnNumber,lineNumber),gridSquare)})
+  }.filter(_.length > 1)
 
 }
 
