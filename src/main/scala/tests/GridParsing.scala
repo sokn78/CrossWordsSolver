@@ -30,12 +30,15 @@ object GridParsing extends App {
   println(grid)
   println(blankGrid)
 
+  /*
   println("horizontalWords")
-  grid.horizontalWords.foreach{x => x.foreach(println)  ; println() }
+  grid.horizontalWords.foreach{x => x.letters.foreach(println)  ; println() }
   println("verticalWords")
-  grid.verticalWords.foreach{x => x.foreach(println)  ; println() }
+  grid.verticalWords.foreach{x => x.letters.foreach(println)  ; println() }
+*/
 
-
+  println(grid.getLeastMissingLettersWord)
+  println(blankGrid.getLeastMissingLettersWord)
 
 
 

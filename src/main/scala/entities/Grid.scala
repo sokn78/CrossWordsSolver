@@ -2,10 +2,19 @@ package entities
 
 import entities.Grid
 import methods.ArrayManipulation
+import entities.WhiteGridSquare
 
 /**
   * Created by Simon on 23/10/2017.
   */
+
+
+sealed trait Word extends Product with Serializable{
+  def letters:Array[(Int,GridSquare)]
+}
+
+final case class HorizontalWord(lineNumber:Int, letters:Array[(Int,GridSquare)]) extends Word
+final case class VerticalWord(columnNumber:Int, letters:Array[(Int,GridSquare)]) extends Word
 
 
 case class Grid(vSize:Int, hSize:Int, gridSquares : Array[Array[GridSquare]]){
@@ -14,6 +23,13 @@ case class Grid(vSize:Int, hSize:Int, gridSquares : Array[Array[GridSquare]]){
     gridSquares.map { line =>
       line.mkString(" ")
     }.mkString("\n")
+  }
+
+  def getLeastMissingLettersWord:Option[Word] = {
+    allWords.map(word => (word, word.letters.map(_._2).count(_ == WhiteGridSquare))).minBy(_._2) match {
+      case (_, 0) => None
+      case (word,_) => Some(word)
+    }
   }
 
   def makeBlank:Grid =
@@ -25,27 +41,26 @@ case class Grid(vSize:Int, hSize:Int, gridSquares : Array[Array[GridSquare]]){
     }
   )
 
-
-  val horizontalWords: Array[Array[(Position, GridSquare)]] = gridSquares.zipWithIndex.map{
+  val horizontalWords: Array[HorizontalWord] = gridSquares.zipWithIndex.map{
     case (line,lineNumber) =>
       (lineNumber,ArrayManipulation.splitArray[(GridSquare,Int)](line.zipWithIndex,x => x._1 == BlackGridSquare))
   }.flatMap{
     case (lineNumber,allSegments) =>
-      allSegments.map( _.map{case (gridSquare,columnNumber) => (Position(lineNumber,columnNumber),gridSquare)})
-  }.filter(_.length > 1)
+      allSegments.map( oneSeg => HorizontalWord(lineNumber,oneSeg.map{case (gridSquare,columnNumber) => (columnNumber,gridSquare)}))
+  }.filter(_.letters.length > 1)
 
   val verticalWords = gridSquares.transpose.zipWithIndex.map{
-    case (line,lineNumber) =>
-      (lineNumber,ArrayManipulation.splitArray[(GridSquare,Int)](line.zipWithIndex,x => x._1 == BlackGridSquare))
+    case (line,columnNumber) =>
+      (columnNumber,ArrayManipulation.splitArray[(GridSquare,Int)](line.zipWithIndex,x => x._1 == BlackGridSquare))
   }.flatMap{
-    case (lineNumber,allSegments) =>
-      allSegments.map( _.map{case (gridSquare,columnNumber) => (Position(columnNumber,lineNumber),gridSquare)})
-  }.filter(_.length > 1)
+    case (columnNumber,allSegments) =>
+      allSegments.map( oneSeg => VerticalWord(columnNumber,oneSeg.map{case (gridSquare,lineNumber) => (lineNumber,gridSquare)}))
+  }.filter(_.letters.length > 1)
+
+  val allWords: Array[Word] = horizontalWords ++ verticalWords
 
 }
 
-case class Position(h:Int,v:Int)
-
-case class WordList(words:List[Array[(Position,GridSquare)]]){
+case class WordList(words:List[Word]){
 
 }
