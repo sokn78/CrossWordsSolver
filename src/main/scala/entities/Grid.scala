@@ -19,6 +19,15 @@ final case class VerticalWord(columnNumber:Int, letters:Array[(Int,GridSquare)])
 
 case class Grid(vSize:Int, hSize:Int, gridSquares : Array[Array[GridSquare]]){
 
+  /*
+  val isComplete: Boolean = !gridSquares.exists{
+    _.exists{
+      _ == WhiteGridSquare
+    }
+  }*/
+
+  val isComplete:Boolean = getLeastMissingLettersWord.isEmpty
+
   override def toString:String = {
     gridSquares.map { line =>
       line.mkString(" ")
@@ -49,7 +58,7 @@ case class Grid(vSize:Int, hSize:Int, gridSquares : Array[Array[GridSquare]]){
       allSegments.map( oneSeg => HorizontalWord(lineNumber,oneSeg.map{case (gridSquare,columnNumber) => (columnNumber,gridSquare)}))
   }.filter(_.letters.length > 1)
 
-  val verticalWords = gridSquares.transpose.zipWithIndex.map{
+  val verticalWords: Array[VerticalWord] = gridSquares.transpose.zipWithIndex.map{
     case (line,columnNumber) =>
       (columnNumber,ArrayManipulation.splitArray[(GridSquare,Int)](line.zipWithIndex,x => x._1 == BlackGridSquare))
   }.flatMap{
