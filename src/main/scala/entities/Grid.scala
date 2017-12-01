@@ -26,8 +26,6 @@ case class Grid(vSize:Int, hSize:Int, gridSquares : Array[Array[GridSquare]]){
     }
   }*/
 
-  val isComplete:Boolean = getLeastMissingLettersWord.isEmpty
-
   override def toString:String = {
     gridSquares.map { line =>
       line.mkString(" ")
@@ -35,7 +33,8 @@ case class Grid(vSize:Int, hSize:Int, gridSquares : Array[Array[GridSquare]]){
   }
 
   def getLeastMissingLettersWord:Option[Word] = {
-    allWords.map(word => (word, word.letters.map(_._2).count(_ == WhiteGridSquare))).minBy(_._2) match {
+    allWords.map(word => (word, word.letters.map(_._2).count(_ == WhiteGridSquare))).minBy(_._2)
+    match {
       case (_, 0) => None
       case (word,_) => Some(word)
     }
@@ -68,6 +67,20 @@ case class Grid(vSize:Int, hSize:Int, gridSquares : Array[Array[GridSquare]]){
 
   val allWords: Array[Word] = horizontalWords ++ verticalWords
 
+  val isComplete:Boolean = getLeastMissingLettersWord.isEmpty
+
+  def fillWithOneWord(foundWord:Word):Grid = {
+    val newGrid = gridSquares
+    foundWord match {
+      case HorizontalWord(lineNumber,letters) => letters.foreach{
+        case (index,square) => newGrid(lineNumber).update(index,square)
+      }
+      case VerticalWord(columnNumber,letters) => letters.foreach{
+        case (index,square) => newGrid(index).update(columnNumber,square)
+      }
+    }
+    Grid(vSize,hSize,newGrid)
+  }
 }
 
 case class WordList(words:List[Word]){

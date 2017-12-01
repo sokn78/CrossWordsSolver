@@ -23,22 +23,23 @@ object GridParsing extends App {
 
   val notreTempsGrid = ntParser.parseFile(file)
 
+  notreTempsGrid.grille.foreach{
+    line => println(line.mkString)
+  }
+
   val grid = NotreTemps.convert(notreTempsGrid)
 
-  val blankGrid = grid.makeBlank
 
   println(grid)
-  println(blankGrid)
 
-  /*
+
   println("horizontalWords")
   grid.horizontalWords.foreach{x => x.letters.foreach(println)  ; println() }
   println("verticalWords")
   grid.verticalWords.foreach{x => x.letters.foreach(println)  ; println() }
-*/
+
 
   println(grid.getLeastMissingLettersWord)
-  println(blankGrid.getLeastMissingLettersWord)
 
 
 
