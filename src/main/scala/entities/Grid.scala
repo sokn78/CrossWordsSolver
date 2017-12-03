@@ -32,6 +32,13 @@ case class Grid(vSize:Int, hSize:Int, gridSquares : Array[Array[GridSquare]]){
     }.mkString("\n")
   }
 
+  def toHTMLString:String = {
+    "<html>" + gridSquares.map { line =>
+      line.mkString(" ")
+    }.mkString("<br>") + "</html>"
+  }
+
+
   def getLeastMissingLettersWord:Option[Word] = {
     allWords.map(word => (word, word.letters.map(_._2).count(_ == WhiteGridSquare))).minBy(_._2)
     match {
@@ -70,16 +77,16 @@ case class Grid(vSize:Int, hSize:Int, gridSquares : Array[Array[GridSquare]]){
   val isComplete:Boolean = getLeastMissingLettersWord.isEmpty
 
   def fillWithOneWord(foundWord:Word):Grid = {
-    val newGrid = gridSquares
+    val newGrid: Grid = Grid(vSize,hSize,gridSquares.map(_.clone()).clone())
     foundWord match {
       case HorizontalWord(lineNumber,letters) => letters.foreach{
-        case (index,square) => newGrid(lineNumber).update(index,square)
+        case (index,square) => newGrid.gridSquares(lineNumber).update(index,square)
       }
       case VerticalWord(columnNumber,letters) => letters.foreach{
-        case (index,square) => newGrid(index).update(columnNumber,square)
+        case (index,square) => newGrid.gridSquares(index).update(columnNumber,square)
       }
     }
-    Grid(vSize,hSize,newGrid)
+    newGrid
   }
 }
 

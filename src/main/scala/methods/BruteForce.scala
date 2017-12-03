@@ -15,6 +15,4 @@ object BruteForce {
     combine(List.fill(nb)(a))
   }
 
-
-
 }

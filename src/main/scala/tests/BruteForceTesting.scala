@@ -12,11 +12,12 @@ object BruteForceTesting extends App {
   
 
 
-  val bTest = List(Letters.A,Letters.B,Letters.C)
+  val bTest = List(Letters.A,Letters.B,Letters.C, Letters.D)
 
-  val it1 = BruteForce.makeCartesianIterator(3,bTest)
+  val it1 = BruteForce.makeCartesianIterator(4,bTest)
 
-  it1.take(100).foreach(println)
+  it1.take(1000).foreach(println)
+
 
 
 
